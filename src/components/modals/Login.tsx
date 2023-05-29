@@ -1,9 +1,20 @@
 import { authModalAtom } from '@/atoms/authModal.atom';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { auth } from '@/lib/firebase';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useRouter } from 'next/router';
 
 export const Login: FC = () => {
+  const [inputs, setInputs] = useState({
+    email: '',
+    password: '',
+  });
   const setAuthModalState = useSetRecoilState(authModalAtom);
+  const [loginWithEmailAndPassword, authUser, isLoading, error] =
+    useSignInWithEmailAndPassword(auth);
+
+  const router = useRouter();
 
   const handleRegisterClicked = () => {
     setAuthModalState((prev) => ({ ...prev, type: 'register' }));
@@ -13,8 +24,37 @@ export const Login: FC = () => {
     setAuthModalState((prev) => ({ ...prev, type: 'forgotPassword' }));
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const { email, password } = inputs;
+
+      if (!email || !password) return alert('Please fill in all fields');
+
+      const user = await loginWithEmailAndPassword(email, password);
+
+      if (!user) return;
+
+      router.push('/');
+    } catch (error: any) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (error) {
+      alert(error.message);
+    }
+  }, [error]);
+
   return (
-    <form className="space-y-6 px-6 pb-4">
+    <form className="space-y-6 px-6 pb-4" onSubmit={handleSubmit}>
       <h3 className="text-xl font-medium text-white">Sign in to LeetClone</h3>
 
       <div>
@@ -33,6 +73,8 @@ export const Login: FC = () => {
             bg-gray-600 border-gray-500 placeholder-gray-400 text-white
         "
           placeholder="name@company.com"
+          onChange={handleInputChange}
+          value={inputs.email}
         />
       </div>
 
@@ -52,6 +94,8 @@ export const Login: FC = () => {
             bg-gray-600 border-gray-500 placeholder-gray-400 text-white
         "
           placeholder="*******"
+          onChange={handleInputChange}
+          value={inputs.password}
         />
       </div>
 
@@ -60,8 +104,9 @@ export const Login: FC = () => {
         className="w-full text-white focus:ring-blue-300 font-medium rounded-lg
                 text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
             "
+        disabled={isLoading}
       >
-        Log In
+        {isLoading ? 'signing you in...' : 'Sign In'}
       </button>
       <button className="flex w-full justify-end">
         <a
