@@ -3,8 +3,17 @@ import { IoClose } from 'react-icons/io5';
 import { Login } from './Login';
 import { Signup } from './Signup';
 import { ResetPassword } from './ResetPassword';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { authModalAtom } from '@/atoms/authModal.atom';
 
 const AuthModal: FC = () => {
+  const authModal = useRecoilValue(authModalAtom);
+  const setAuthModalState = useSetRecoilState(authModalAtom);
+
+  const handlModalClose = () => {
+    setAuthModalState({ isOpen: false, type: 'login' });
+  };
+
   return (
     <>
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-60"></div>
@@ -15,11 +24,14 @@ const AuthModal: FC = () => {
               <button
                 type="button"
                 className="bg-transparent  rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-800 hover:text-white text-white"
+                onClick={handlModalClose}
               >
                 <IoClose className="text-xl" />
               </button>
             </div>
-            <ResetPassword />
+            {authModal.type === 'login' && <Login />}
+            {authModal.type === 'register' && <Signup />}
+            {authModal.type === 'forgotPassword' && <ResetPassword />}
           </div>
         </div>
       </div>

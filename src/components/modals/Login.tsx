@@ -1,6 +1,18 @@
+import { authModalAtom } from '@/atoms/authModal.atom';
 import { FC } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 export const Login: FC = () => {
+  const setAuthModalState = useSetRecoilState(authModalAtom);
+
+  const handleRegisterClicked = () => {
+    setAuthModalState((prev) => ({ ...prev, type: 'register' }));
+  };
+
+  const handleForgotPasswordClicked = () => {
+    setAuthModalState((prev) => ({ ...prev, type: 'forgotPassword' }));
+  };
+
   return (
     <form className="space-y-6 px-6 pb-4">
       <h3 className="text-xl font-medium text-white">Sign in to LeetClone</h3>
@@ -55,13 +67,18 @@ export const Login: FC = () => {
         <a
           href="#"
           className="text-sm block text-brand-orange hover:underline w-full text-right"
+          onClick={handleForgotPasswordClicked}
         >
           Forgot Password?
         </a>
       </button>
       <div className="text-sm font-medium text-gray-300">
         Not Registered?{' '}
-        <a href="#" className="text-blue-700 hover:underline">
+        <a
+          href="#"
+          className="text-blue-700 hover:underline"
+          onClick={handleRegisterClicked}
+        >
           Create account
         </a>
       </div>
