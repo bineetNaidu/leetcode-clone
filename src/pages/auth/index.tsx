@@ -1,6 +1,7 @@
+import AuthModal from '@/components/modals/AuthModal';
+import Image from 'next/image';
 import { authModalAtom } from '@/atoms/authModal.atom';
 import { Navbar } from '@/components/Navbar';
-import AuthModal from '@/components/modals/AuthModal';
 import { auth } from '@/lib/firebase';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -25,7 +26,13 @@ const Auth = () => {
       <div className="max-w-7xl mx-auto">
         <Navbar />
         <div className="flex items-center justify-center h-[calc(100vh-5rem)] pointer-events-none select-none">
-          <img src="/hero.png" alt="Banner" />
+          <Image
+            src="/hero.png"
+            alt="Banner"
+            className="pointer-events-none select-none"
+            height={600}
+            width={600}
+          />
         </div>
         {authModal.isOpen && <AuthModal />}
       </div>

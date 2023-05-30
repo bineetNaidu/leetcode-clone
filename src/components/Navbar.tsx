@@ -1,5 +1,6 @@
-import { authModalAtom } from '@/atoms/authModal.atom';
 import Link from 'next/link';
+import Image from 'next/image';
+import { authModalAtom } from '@/atoms/authModal.atom';
 import { FC } from 'react';
 import { useSetRecoilState } from 'recoil';
 
@@ -15,7 +16,13 @@ export const Navbar: FC<Props> = () => {
   return (
     <nav className="flex items-center justify-between sm:px-12 px-2 md:px-24">
       <Link href="/" className="flex items-center justify-center h-20">
-        <img src="/logo.png" alt="LeetCode Logo" className="h-full" />
+        <Image
+          src="/logo.png"
+          alt="LeetCode Logo"
+          className="h-full"
+          width={200}
+          height={200}
+        />
       </Link>
 
       <div className="flex items-center">

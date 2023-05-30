@@ -1,5 +1,6 @@
-import { FC } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { FC } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { LogoutBtn } from './LogoutBtn';
@@ -12,7 +13,13 @@ export const Topbar: FC = () => {
         className={`flex w-full items-center justify-between max-w-[1200px] mx-auto`}
       >
         <Link href="/" className="h-[22px] flex-1">
-          <img src="/logo-full.png" alt="Logo" className="h-full" />
+          <Image
+            src="/logo-full.png"
+            alt="Logo"
+            className="h-full"
+            height={100}
+            width={100}
+          />
         </Link>
 
         <div className="flex items-center space-x-4 flex-1 justify-end">
@@ -34,10 +41,12 @@ export const Topbar: FC = () => {
             </Link>
           ) : (
             <div className="cursor-pointer group relative">
-              <img
+              <Image
                 src="/avatar.png"
                 alt="user profile avatar"
                 className="h-8 w-8 rounded-full"
+                height={100}
+                width={100}
               />
               <div
                 className="absolute top-10 left-2/4 -translate-x-2/4  mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg z-40 group-hover:scale-100 scale-0 
