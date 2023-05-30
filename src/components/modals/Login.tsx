@@ -4,6 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { auth } from '@/lib/firebase';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 export const Login: FC = () => {
   const [inputs, setInputs] = useState({
@@ -34,7 +35,8 @@ export const Login: FC = () => {
     try {
       const { email, password } = inputs;
 
-      if (!email || !password) return alert('Please fill in all fields');
+      if (!email || !password)
+        return toast.warning('Please fill in all fields');
 
       const user = await loginWithEmailAndPassword(email, password);
 
@@ -43,13 +45,13 @@ export const Login: FC = () => {
       router.push('/');
     } catch (error: any) {
       console.error(error);
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
   useEffect(() => {
     if (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   }, [error]);
 
@@ -103,6 +105,8 @@ export const Login: FC = () => {
         type="submit"
         className="w-full text-white focus:ring-blue-300 font-medium rounded-lg
                 text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
+								transition-colors duration-300 ease-in-out
+								disabled:opacity-50 disabled:cursor-not-allowed
             "
         disabled={isLoading}
       >

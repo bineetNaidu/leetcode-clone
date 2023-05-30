@@ -3,8 +3,8 @@ import { FC, useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
-import { updateCurrentUser } from 'firebase/auth';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 export const Signup: FC = () => {
   const [inputs, setInputs] = useState({
@@ -13,7 +13,7 @@ export const Signup: FC = () => {
     password: '',
   });
   const setAuthModalState = useSetRecoilState(authModalAtom);
-  const [createUser, authUser, isLoading, error] =
+  const [createUser, _, isLoading, error] =
     useCreateUserWithEmailAndPassword(auth);
 
   const router = useRouter();
@@ -24,7 +24,7 @@ export const Signup: FC = () => {
       const { email, password, displayName } = inputs;
 
       if (!email || !password || !displayName)
-        return alert('Please fill in all fields');
+        return toast.warning('Please fill in all fields');
 
       const newUser = await createUser(email, password);
 
@@ -33,7 +33,7 @@ export const Signup: FC = () => {
       router.push('/');
     } catch (error: any) {
       console.error(error);
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -48,7 +48,7 @@ export const Signup: FC = () => {
 
   useEffect(() => {
     if (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   }, [error]);
 
@@ -123,7 +123,9 @@ export const Signup: FC = () => {
         type="submit"
         className="w-full text-white focus:ring-blue-300 font-medium rounded-lg
                 text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
+								disabled:opacity-50 disabled:cursor-not-allowed
             "
+        disabled={isLoading}
       >
         {isLoading ? 'registering...' : 'Register'}
       </button>
