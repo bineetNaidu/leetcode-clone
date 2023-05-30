@@ -2,6 +2,7 @@ import { FC } from 'react';
 import Link from 'next/link';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
+import { LogoutBtn } from './LogoutBtn';
 
 export const Topbar: FC = () => {
   const [authUser] = useAuthState(auth);
@@ -46,6 +47,7 @@ export const Topbar: FC = () => {
               </div>
             </div>
           )}
+          {authUser && <LogoutBtn />}
         </div>
       </div>
     </nav>
