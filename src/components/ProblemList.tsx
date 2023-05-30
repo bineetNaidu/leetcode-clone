@@ -7,9 +7,14 @@ import type { Problem } from '@/utils/mockProblems';
 type Props = {
   idx: number;
   doc: Problem;
+  handleOpenYoutubePlayer: (videoId: string) => void;
 };
 
-export const ProblemList: FC<Props> = ({ doc, idx }) => {
+export const ProblemList: FC<Props> = ({
+  doc,
+  idx,
+  handleOpenYoutubePlayer,
+}) => {
   const difficultyColor =
     doc.difficulty === 'Easy'
       ? 'text-dark-green-s'
@@ -41,6 +46,7 @@ export const ProblemList: FC<Props> = ({ doc, idx }) => {
             fontSize={18}
             width={18}
             className="cursor-pointer hover:text-red-500"
+            onClick={() => handleOpenYoutubePlayer(doc.videoId!)}
           />
         ) : (
           <p>coming soon</p>
