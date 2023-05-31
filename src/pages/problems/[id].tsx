@@ -1,11 +1,13 @@
 import type { NextPage } from 'next';
 import { Topbar } from '@/components/Topbar';
+import { Workspace } from '@/components/Workspace';
 
 const Problem: NextPage = () => {
   return (
-    <div>
+    <main>
       <Topbar problemPage />
-    </div>
+      <Workspace />
+    </main>
   );
 };
 
