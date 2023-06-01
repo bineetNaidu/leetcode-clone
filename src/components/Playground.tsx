@@ -4,11 +4,13 @@ import { PreferenceNav } from './PreferenceNav';
 import CodeMirror from '@uiw/react-codemirror';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 import { javascript } from '@codemirror/lang-javascript';
+import { EditorFooter } from './EditorFooter';
 
 export const Playground: FC = () => {
   return (
-    <div className="flex flex-col bg-dark-layer-1 relative">
+    <div className="flex flex-col bg-dark-layer-1 relative overflow-x-auto">
       <PreferenceNav />
+
       <Split
         className="h-[calc(100vh-94px)]"
         direction="vertical"
@@ -58,6 +60,8 @@ export const Playground: FC = () => {
           </div>
         </div>
       </Split>
+
+      <EditorFooter />
     </div>
   );
 };
